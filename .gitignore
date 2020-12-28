@@ -1,0 +1,15 @@
+node_modules/
+dist/
+
+# dotenv environment variables file
+.env
+.env.test
+
+# TypeScript cache
+*.tsbuildinfo
+
+# npm cache directory
+.npm
+
+# eslint cache
+.eslintcache
