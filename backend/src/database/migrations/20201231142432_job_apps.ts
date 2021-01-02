@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import * as Knex from "knex"
 
 
 export async function up(knex: Knex): Promise<void> {
@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string('url', 100)
             table.date('firstContactDate')
             table.date('lastContactDate')
-            table.string('status')
+            table.string('status', 15)
         })
         .createTable('companies', (table) => {
             table.increments('id').primary()

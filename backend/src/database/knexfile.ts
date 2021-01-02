@@ -6,7 +6,8 @@ module.exports = {
     client: "sqlite3",
     connection: {
       filename: "job_apps.sqlite"
-    }
+    },
+    useNullAsDefault: true
   },
 
   staging: {
