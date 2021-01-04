@@ -13,3 +13,6 @@ dist/
 
 # eslint cache
 .eslintcache
+
+#database files...
+*.sqlite
