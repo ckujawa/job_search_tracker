@@ -1,5 +1,4 @@
-import { ApolloServer, gql } from 'apollo-server-express'
-import { GraphQLScalarType } from 'graphql'
+import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
     scalar Date
