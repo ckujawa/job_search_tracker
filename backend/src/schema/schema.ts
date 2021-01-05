@@ -1,4 +1,5 @@
-import { gql } from 'apollo-server-express'
+import { ApolloServer, gql } from 'apollo-server-express'
+import { GraphQLScalarType } from 'graphql'
 
 const typeDefs = gql`
     scalar Date
@@ -15,29 +16,26 @@ const typeDefs = gql`
     }
 
     type Contact{
-      id: Int
-      firstName: String!
-      lastName: String!
+      id: String
+      firstName: String
+      lastName: String
       title: String
 
     }
 
     type Company{
-      id: Int
-      name: String!
+      id: String
+      name: String
       city: String
       state: String
-      zipCode: String
       url: String
       contacts: [Contact]
     }
 
     type JobLead {
-      id: Int
+      id: String
       roleTitle: String!
       company: Company!
-      source: String!
-      url: String!
       firstContactDate: Date!
       lastContactDate: Date!
       status: Status
