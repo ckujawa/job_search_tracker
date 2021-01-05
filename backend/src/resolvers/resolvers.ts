@@ -11,7 +11,7 @@ const resolvers: IResolvers = {
 
   Date: new GraphQLScalarType({
     name: 'Date',
-    description: "Prety self-explanatory...",
+    description: "it's a date, deal with it",
     parseValue(value) {
       // value from the client
       return new Date(value);
