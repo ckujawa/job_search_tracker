@@ -19,7 +19,6 @@ const typeDefs = gql`
       firstName: String!
       lastName: String!
       title: String
-
     }
 
     type Company{
@@ -45,9 +44,11 @@ const typeDefs = gql`
 
     type Query {
       jobLeads: [JobLead]
-      jobLead(id: String): JobLead
+      jobLead(id: Int): JobLead
       companies: [Company]
+      company(id: Int): Company
       contacts: [Contact]
+      contact(id: Int): Contact
     }
 `
 
