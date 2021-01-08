@@ -69,6 +69,6 @@
   },
 
   "files": ["src/@types/graphql.d.ts"],
-  "include": ["src/**/*", "serverInfo.json"],
+  "include": ["src/**/*", "serverInfo.json", ".env"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
