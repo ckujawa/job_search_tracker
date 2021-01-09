@@ -11,7 +11,6 @@ class dbConnection {
         const user: string | undefined = process.env.DB_USER
         const password: string | undefined = process.env.DB_PASSWORD
         let connectData: ConnectOptions = {useNewUrlParser: true, useUnifiedTopology: true}
-        let dbConn: Connection
 
         if (!isNullUndefinedOrEmpty(user) && !isNullUndefinedOrEmpty(password)) {
             connectData.user = user
@@ -20,22 +19,22 @@ class dbConnection {
 
         //add optional config option for prod use...
         if (!isNullUndefinedOrEmpty(dbUrl)) {
-            dbConn = mongoose.createConnection(dbUrl!, connectData)
+            mongoose.connect(dbUrl!, connectData)
 
-            dbConn.on('connected', () => {
-                console.log('Mongoose has successfully connected to the db')
+            mongoose.connection.on('connected', () => {
+                console.log(`Mongoose has successfully connected to the db at ${Date.now()}`)
             })
             
-            dbConn.on('error', (err) => {
+            mongoose.connection.on('error', (err) => {
                 console.log(`You tried to do something with the db and a thing happened: ${err}`)
             })
 
-            dbConn.on('disconnected', () => {
+            mongoose.connection.on('disconnected', () => {
                 console.log('We have disconnected from the db.')
             })
 
             process.on('SIGINT', function () {
-                dbConn.close(() => {
+                mongoose.connection.close(() => {
                     console.log(`Closing the connection to the database at ${Date.now()}`)
                     process.exit(0);
                 })

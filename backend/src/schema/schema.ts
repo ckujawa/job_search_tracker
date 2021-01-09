@@ -20,7 +20,7 @@ const typeDefs = gql`
       firstName: String
       lastName: String
       title: String
-
+      email: String
     }
 
     type Company{
@@ -34,7 +34,7 @@ const typeDefs = gql`
 
     type JobLead {
       id: String
-      roleTitle: String!
+      title: String!
       company: Company!
       firstContactDate: Date!
       lastContactDate: Date!
@@ -43,9 +43,39 @@ const typeDefs = gql`
 
     type Query {
       jobLeads: [JobLead]
-      jobLead(id: String): JobLead
+      jobLeadById(id: String): JobLead
       companies: [Company]
       contacts: [Contact]
+    }
+
+    input ContactInput {
+      id: String
+      firstName: String
+      lastName: String
+      title: String
+      email: String
+    }
+
+    input CompanyInput {
+      id: String
+      name: String
+      city: String
+      state: String
+      url: String
+      contacts: [ContactInput]
+    }
+
+    input JobLeadInput {
+      id: String
+      title: String
+      company: CompanyInput
+      firstContactDate: Date
+      lastContactDate: Date
+      status: Status
+    }
+
+    type Mutation{
+      addJobLead(jobLead: JobLeadInput): JobLead
     }
 `
 
