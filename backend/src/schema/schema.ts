@@ -21,6 +21,8 @@ const typeDefs = gql`
       lastName: String
       title: String
       email: String
+      phone: String
+      additionalNotes: String
     }
 
     type Company{
@@ -32,20 +34,32 @@ const typeDefs = gql`
       contacts: [Contact]
     }
 
+    type Source{
+      id: String
+      name: String!
+      url: String!
+      jobLeadIds: [String]
+    }
+
     type JobLead {
       id: String
       title: String!
-      company: Company!
+      companyId: String!
       firstContactDate: Date!
       lastContactDate: Date!
+      nextContactDate: Date
+      nextStep: String
       status: Status
+      sourceId: String!
+      url: String!
+      description: String!
     }
 
     type Query {
       jobLeads: [JobLead]
       jobLeadById(id: String): JobLead
       companies: [Company]
-      contacts: [Contact]
+      sources: [Source]
     }
 
     input ContactInput {
@@ -54,6 +68,8 @@ const typeDefs = gql`
       lastName: String
       title: String
       email: String
+      phone: String
+      additionalNotes: String
     }
 
     input CompanyInput {
@@ -65,17 +81,42 @@ const typeDefs = gql`
       contacts: [ContactInput]
     }
 
+    input AddContactInput {
+      companyId: String
+      newContact: ContactInput
+    }
+
+    input SourceInput {
+      id: String
+      name: String
+      url: String
+      jobLeadIds: [String]
+    }
+
     input JobLeadInput {
       id: String
       title: String
-      company: CompanyInput
+      companyId: String
       firstContactDate: Date
       lastContactDate: Date
       status: Status
+      sourceId: String
+      url: String
+      description: String
+    }
+
+    input NextStepInput{
+      leadId: String
+      nextContactDate: Date
+      nextStep: String
     }
 
     type Mutation{
       addJobLead(jobLead: JobLeadInput): JobLead
+      updateNextSteps(nextStep: NextStepInput): JobLead
+      addCompany(company: CompanyInput): Company
+      addContactToCompany(updateInfo: AddContactInput): Company
+      addSource(source: SourceInput): Source
     }
 `
 

@@ -3,28 +3,55 @@ import mongoose, { Schema, Model, model, Document } from 'mongoose'
 interface IJobLead extends Document {
     id: string
     title: string
-    company: {
-        id: string
-        name: string
-        city: string
-        state: string
-        url: string
-        contacts: [{
-            id: string
-            firstName: string
-            lastName: string
-            title: string
-            email: string
-        }]
-    }
+    companyId: String
     firstContactDate: Date
     lastContactDate: Date
     status: string
+    sourceId: String
+    url: String
+    description: String
 }
 
-const jobLeadSchema: Schema = new Schema({
+interface ICompany extends Document {
+    id: string
+    name: string
+    city: string
+    state: string
+    url: string
+    contacts: [{
+      id: string
+      firstName: string
+      lastName: string
+      title: string
+      email: string
+      phone: string
+      additionalNotes: string
+    }]
+}
+
+interface ISource extends Document{
+    id: string
+    name: string
+    url: string
+    jobLeadIds: [string]
+}
+
+const jobLeadSchema: Schema<IJobLead> = new Schema({
+    id: String,
     title: String,
-    company: {
+    companyId: String,
+    firstContactDate: { type: Date, default: Date.now },
+    lastContactDate: { type: Date, default: Date.now },
+    status: String,
+    sourceId: String,
+    url: String,
+    description: String
+})
+
+export const JobLead: Model<IJobLead> = model('JobLead', jobLeadSchema)
+
+const companySchema: Schema<ICompany> = new Schema({
+        id: String,
         name: String,
         city: String,
         state: String,
@@ -35,10 +62,15 @@ const jobLeadSchema: Schema = new Schema({
             title: String,
             email: String
         }]
-    },
-    firstContactDate: { type: Date, default: Date.now },
-    lastContactDate: { type: Date, default: Date.now },
-    status: String
 })
 
-export const JobLead: Model<IJobLead> = model('JobLead', jobLeadSchema)
+export const Company: Model<ICompany> = model('Company', companySchema)
+
+const sourceSchema: Schema<ISource> = new Schema({
+    id: String,
+    name: String,
+    url: String,
+    jobLeadIds: [String]
+})
+
+export const Source: Model<ISource> = model('Source', sourceSchema)
