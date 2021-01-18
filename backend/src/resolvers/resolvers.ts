@@ -1,12 +1,12 @@
 import { IResolvers } from 'apollo-server-express';
 import { GraphQLScalarType, Kind } from 'graphql';
-import { Company, JobLead, Source } from '../model/JobLeadSchema';
+import { CompanyModel, JobLeadModel, SourceModel } from '../model/JobLeadSchema';
 
 const resolvers: IResolvers = {
   Query: {
     jobLeads: async () => {
       try {
-        const leads = await JobLead.find()
+        const leads = await JobLeadModel.find()
         return leads
       } catch (err) {
         //nope.
@@ -14,19 +14,35 @@ const resolvers: IResolvers = {
     },
     jobLeadById: async (obj, args) => {
       try {
-        const lead = await JobLead.findById(args.id)
+        const lead = await JobLeadModel.findById(args.id)
         return lead
       } catch (err) {
         //barf...
       }
     },
-    companies: () => [{}]
+    companies: async () => {
+      try {
+        const companies = await CompanyModel.find()
+        return companies
+      } catch (err) {
+        //handle err
+      }
+    },
+    companyById: async (obj, args) => {
+      try {
+        const company = await CompanyModel.findById(args.id)
+        return company
+      } catch (err) {
+        //handle err
+      }
+    }
+
   },
 
   Mutation: {
     addJobLead: async (obj, { jobLead }, context) => {
       try{
-        const lead = await JobLead.create({
+        const lead = await JobLeadModel.create({
           ...jobLead
         })
         return lead
@@ -38,15 +54,15 @@ const resolvers: IResolvers = {
     updateNextSteps: async (obj, { nextStepInput }) => {
       const {leadId, nextContactDate, nextStep} = nextStepInput
       try {
-        const updated = await Company.findByIdAndUpdate(leadId, { nextContactDate: nextContactDate, nextStep: nextStep })
+        const updated = await CompanyModel.findByIdAndUpdate(leadId, { nextContactDate: nextContactDate, nextStep: nextStep }).exec()
         return updated
       } catch (err) {
         console.error(`something went wrong when updateing next steps: ${err.message}`)
       }
     },
-    addJobCompany: async (obj, { company }) => {
+    addCompany: async (obj, { company }) => {
       try {
-        const newCompany = await Company.create({
+        const newCompany = await CompanyModel.create({
           ...company
         })
         return newCompany
@@ -57,7 +73,7 @@ const resolvers: IResolvers = {
     addContactToCompany: async (object, { updateInfo }) => {
       let { id, newContact } = updateInfo
       try {
-        const toUpdate = await Company.findById(id)
+        const toUpdate = await CompanyModel.findById(id)
         toUpdate.contacts.push(newContact)
         await toUpdate.save()
         return toUpdate
@@ -67,7 +83,7 @@ const resolvers: IResolvers = {
     }, 
     addSource: async (object, { source }) => {
       try {
-        const added = Source.create({
+        const added = SourceModel.create({
           ...source
         })
         return added

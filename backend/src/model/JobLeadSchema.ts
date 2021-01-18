@@ -1,6 +1,6 @@
 import mongoose, { Schema, Model, model, Document } from 'mongoose'
 
-interface IJobLead extends Document {
+export interface IJobLead extends Document {
     id: string
     title: string
     companyId: String
@@ -12,7 +12,7 @@ interface IJobLead extends Document {
     description: String
 }
 
-interface ICompany extends Document {
+export interface ICompany extends Document {
     id: string
     name: string
     city: string
@@ -29,7 +29,7 @@ interface ICompany extends Document {
     }]
 }
 
-interface ISource extends Document{
+export interface ISource extends Document{
     id: string
     name: string
     url: string
@@ -38,7 +38,7 @@ interface ISource extends Document{
 
 const jobLeadSchema: Schema<IJobLead> = new Schema({
     id: String,
-    title: String,
+    title: {type: String, required: true},
     companyId: String,
     firstContactDate: { type: Date, default: Date.now },
     lastContactDate: { type: Date, default: Date.now },
@@ -48,7 +48,7 @@ const jobLeadSchema: Schema<IJobLead> = new Schema({
     description: String
 })
 
-export const JobLead: Model<IJobLead> = model('JobLead', jobLeadSchema)
+export const JobLeadModel: Model<IJobLead> = model('JobLead', jobLeadSchema)
 
 const companySchema: Schema<ICompany> = new Schema({
         id: String,
@@ -64,13 +64,13 @@ const companySchema: Schema<ICompany> = new Schema({
         }]
 })
 
-export const Company: Model<ICompany> = model('Company', companySchema)
+export const CompanyModel: Model<ICompany> = model('Company', companySchema)
 
 const sourceSchema: Schema<ISource> = new Schema({
     id: String,
-    name: String,
-    url: String,
+    name: {type: String, required: true},
+    url: {type: String,},
     jobLeadIds: [String]
 })
 
-export const Source: Model<ISource> = model('Source', sourceSchema)
+export const SourceModel: Model<ISource> = model('Source', sourceSchema)
